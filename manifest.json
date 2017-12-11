@@ -1,0 +1,14 @@
+[
+  {
+    "uri": "http://source.enncloud.cn/songjj/project-1.git",
+    "name": "project-1",
+    "branch": "develop",
+    "path": "project-1"
+  },
+  {
+    "uri": "http://source.enncloud.cn/songjj/PatchCreator.git",
+    "name": "PatchCreator",
+    "branch": "master",
+    "path": "project-1/bar"
+  }
+]
