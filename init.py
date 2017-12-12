@@ -12,8 +12,7 @@ def main(manifestUri):
 
     ret = clone(manifestUri)
     if ret != 0:
-        Util.cprint('manifest clone ' + manifestUri + ' fail: ' + str(ret))
-        return ret
+        raise Exception('manifest clone ' + manifestUri + ' fail: ' + str(ret))
 
     Util.cprint('manifest clone ' + manifestUri + ' success')
 

@@ -16,22 +16,19 @@ def main(file_path):
         if os.path.exists(os.getcwd() + git.path):
             ret = update(git)
             if ret != 0:
-                Util.cprint(git.name + ' update ' + git.uri + ' fail: ' + str(ret))
-                return ret
+                raise Exception(git.name + ' update ' + git.uri + ' fail: ' + str(ret))
 
             Util.cprint(git.name + ' update ' + git.uri + ' success')
 
             ret = rebase(git)
             if ret != 0:
-                Util.cprint(git.name + ' rebase ' + git.uri + ' fail: ' + str(ret))
-                return ret
+                raise Exception(git.name + ' rebase ' + git.uri + ' fail: ' + str(ret))
 
             Util.cprint(git.name + ' rebase ' + git.uri + ' success')
         else:
             ret = clone(git)
             if ret != 0:
-                Util.cprint(git.name + ' clone ' + git.uri + ' fail: ' + str(ret))
-                return ret
+                raise Exception(git.name + ' clone ' + git.uri + ' fail: ' + str(ret))
 
             Util.cprint(git.name + ' clone ' + git.uri + ' success')
 
