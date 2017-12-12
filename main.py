@@ -3,14 +3,14 @@
 
 import sys
 import os
-import clone
+import sync
 import init
 
 subModule = sys.argv[1]
-if subModule == 'clone':
+if subModule == 'sync':
     if len(sys.argv) <= 2:
-        clone.main(os.getcwd() + '/.githelper/manifest/manifest.json')
+        sync.main(os.getcwd() + '/.githelper/manifest/manifest.json')
     else:
-        clone.main(sys.argv[2])
+        sync.main(sys.argv[2])
 elif subModule == 'init':
     init.main(sys.argv[2])
