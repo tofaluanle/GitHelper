@@ -39,7 +39,7 @@ def main(file_path):
 
 
 def clone(git):
-    obj = subprocess.Popen(['git', 'clone', git.uri, git.path, '-b', git.branch], stdout=subprocess.PIPE)
+    obj = subprocess.Popen(['git', 'clone', git.uri, os.getcwd() + git.path, '-b', git.branch], stdout=subprocess.PIPE)
     obj.wait()
     ret = obj.returncode
     return ret
