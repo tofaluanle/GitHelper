@@ -16,22 +16,25 @@ def main(manifestUri, branch):
     if os.path.exists(PATH):
         ret = update()
         if ret != 0:
-            raise Exception('manifest update ' + manifestUri + ' fail: ' + str(ret))
+            msg = 'manifest update fail: ' + str(ret) + ', ' + manifestUri
+            raise Exception(msg)
 
-        Util.cprint('manifest update ' + manifestUri + ' success')
+        Util.cprint('manifest update success' + manifestUri)
 
         ret = reset(branch)
         if ret != 0:
-            raise Exception('manifest reset ' + manifestUri + ' fail: ' + str(ret))
+            msg = 'manifest reset fail: ' + str(ret) + ', ' + manifestUri
+            raise Exception(msg)
 
-        Util.cprint('manifest reset ' + manifestUri + ' success')
+        Util.cprint('manifest reset success' + manifestUri)
 
     else:
         ret = clone(manifestUri, branch)
         if ret != 0:
-            raise Exception('manifest clone ' + manifestUri + ' fail: ' + str(ret))
+            msg = 'manifest clone fail: ' + str(ret) + ', ' + manifestUri
+            raise Exception(msg)
 
-        Util.cprint('manifest clone ' + manifestUri + ' success')
+        Util.cprint('manifest clone success, ' + manifestUri)
 
     return 0
 
