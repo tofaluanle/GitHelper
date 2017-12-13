@@ -9,7 +9,8 @@ import os
 
 PATH = os.getcwd() + '/.githelper/manifest'
 
-def main(manifestUri):
+
+def main(manifestUri, branch):
     # shutil.copytree(sys.path[0], '.githelper/python')
 
     if os.path.exists(PATH):
@@ -19,24 +20,24 @@ def main(manifestUri):
 
         Util.cprint('manifest update ' + manifestUri + ' success')
 
-        ret = reset()
+        ret = reset(branch)
         if ret != 0:
             raise Exception('manifest reset ' + manifestUri + ' fail: ' + str(ret))
 
         Util.cprint('manifest reset ' + manifestUri + ' success')
-        
+
     else:
-        ret = clone(manifestUri)
+        ret = clone(manifestUri, branch)
         if ret != 0:
             raise Exception('manifest clone ' + manifestUri + ' fail: ' + str(ret))
-    
+
         Util.cprint('manifest clone ' + manifestUri + ' success')
 
     return 0
 
 
-def clone(git):
-    obj = subprocess.Popen(['git', 'clone', git, '.githelper/manifest'], stdout=subprocess.PIPE)
+def clone(git, branch):
+    obj = subprocess.Popen(['git', 'clone', git, '.githelper/manifest', '-b', branch], stdout=subprocess.PIPE)
     obj.wait()
     ret = obj.returncode
     return ret
@@ -49,8 +50,8 @@ def update():
     return ret
 
 
-def reset():
-    obj = subprocess.Popen(['git', 'reset', '--hard', 'origin/master'], stdout=subprocess.PIPE, cwd=PATH)
+def reset(branch):
+    obj = subprocess.Popen(['git', 'reset', '--hard', 'origin/' + branch], stdout=subprocess.PIPE, cwd=PATH)
     obj.wait()
     ret = obj.returncode
     return ret
