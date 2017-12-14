@@ -13,7 +13,9 @@ if subModule == 'sync':
     else:
         sync.main(sys.argv[2])
 elif subModule == 'init':
-    if len(sys.argv) > 2:
+    if len(sys.argv) < 3:
+        init.main('', 'develop')
+    elif len(sys.argv) == 3:
         init.main(sys.argv[2], 'develop')
     else:
         init.main(sys.argv[2], sys.argv[3])
