@@ -14,20 +14,8 @@ def main(manifestUri, branch):
     # shutil.copytree(sys.path[0], '.githelper/python')
 
     if os.path.exists(PATH):
-        ret = update()
-        if ret != 0:
-            msg = 'Fail: ' + str(ret) + ', ' + 'manifest update, ' + manifestUri
-            raise Exception(msg)
-
-        Util.cprint('Success manifest update ' + manifestUri)
-
-        ret = reset(branch)
-        if ret != 0:
-            msg = 'Fail: ' + str(ret) + ', ' + 'manifest reset, ' + manifestUri
-            raise Exception(msg)
-
-        Util.cprint('Success manifest reset ' + manifestUri)
-
+        update()
+        reset(branch)
     else:
         ret = clone(manifestUri, branch)
         if ret != 0:
@@ -50,11 +38,21 @@ def update():
     obj = subprocess.Popen(['git', 'remote', 'update'], stdout=subprocess.PIPE, cwd=PATH)
     obj.wait()
     ret = obj.returncode
+    if ret != 0:
+        msg = 'Fail: ' + str(ret) + ', ' + 'manifest update'
+        raise Exception(msg)
+
+    Util.cprint('Success manifest update')
     return ret
 
 
 def reset(branch):
-    obj = subprocess.Popen(['git', 'reset', '--hard', 'origin/' + branch], stdout=subprocess.PIPE, cwd=PATH)
+    obj = subprocess.Popen(['git', 'checkout', 'origin/' + branch, '-B', branch], stdout=subprocess.PIPE, cwd=PATH)
     obj.wait()
     ret = obj.returncode
+    if ret != 0:
+        msg = 'Fail: ' + str(ret) + ', ' + 'manifest checkout -B ' + branch
+        raise Exception(msg)
+
+    Util.cprint('Success manifest checkout -B ' + branch)
     return ret
