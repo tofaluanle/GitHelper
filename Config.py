@@ -3,4 +3,6 @@
 
 import os
 
-MAINFEST_PATH = os.getcwd() + '/.githelper/manifest/manifest.json'
+
+MAINFEST_DIR = os.getcwd() + '/.githelper/manifest/'
+MAINFEST_PATH = MAINFEST_DIR + 'manifest.json'

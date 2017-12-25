@@ -2,7 +2,7 @@
 
 rootDir=$(cd `dirname $0`; pwd)
 
-python3 $rootDir/main.py $1 $2 $3 $4
+python3 $rootDir/main.py $@
 
 #case $1 in
 #init)

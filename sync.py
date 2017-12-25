@@ -4,60 +4,25 @@
 import json
 from GitBean import GitBean
 import Util
-import subprocess
 import os
+import Config
+import sys
 
 
-def main(file_path):
+def main():
+    if len(sys.argv) <= 2:
+        file_path = Config.MAINFEST_PATH
+    else:
+        file_path = sys.argv[2]
+
     with open(file_path, "r") as f:
         gits = json.load(f, object_hook=GitBean.parse)
 
     for git in gits:
         if os.path.exists(os.getcwd() + git.path):
-            update(git)
-            merge(git)
+            Util.execCmd(['git', 'remote', 'update'], os.getcwd() + git.path)
+            Util.execCmd(['git', 'merge', 'origin/' + git.branch], os.getcwd() + git.path)
         else:
-            clone(git)
+            Util.execCmd(['git', 'clone', git.uri, os.getcwd() + git.path, '-b', git.branch])
 
     return 0
-
-
-def clone(git):
-    Util.cprint('exec: git clone' + git.uri + ' ' + os.getcwd() + git.path + ' -b ' + git.branch)
-    obj = subprocess.Popen(['git', 'clone', git.uri, os.getcwd() + git.path, '-b', git.branch], stdout=subprocess.PIPE)
-    obj.wait()
-    ret = obj.returncode
-    if ret != 0:
-        msg = 'Fail: ' + str(ret) + ', ' + git.name + ' clone, ' + git.uri
-        raise Exception(msg)
-
-    Util.cprint('Success ' + git.name + ' clone ' + git.uri)
-    return ret
-
-
-def update(git):
-    Util.cprint('path: ' + os.getcwd() + git.path)
-    Util.cprint('exec: git remote update')
-    obj = subprocess.Popen(['git', 'remote', 'update'], stdout=subprocess.PIPE, cwd=os.getcwd() + git.path)
-    obj.wait()
-    ret = obj.returncode
-    if ret != 0:
-        msg = 'Fail: ' + str(ret) + ', ' + git.name + ' update, ' + git.uri
-        raise Exception(msg)
-
-    Util.cprint('Success ' + git.name + ' update ' + git.uri)
-    return ret
-
-
-def merge(git):
-    Util.cprint('path: ' + os.getcwd() + git.path)
-    Util.cprint('exec: git merge origin/' + git.branch)
-    obj = subprocess.Popen(['git', 'merge', 'origin/' + git.branch], stdout=subprocess.PIPE, cwd=os.getcwd() + git.path)
-    obj.wait()
-    ret = obj.returncode
-    if ret != 0:
-        msg = 'Fail: ' + str(ret) + ', ' + git.name + ' merge, ' + git.uri
-        raise Exception(msg)
-
-    Util.cprint('Success ' + git.name + ' merge ' + git.uri)
-    return ret
