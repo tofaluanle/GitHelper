@@ -7,6 +7,10 @@ import init
 import forall
 import Util
 
+if len(sys.argv) <= 1:
+    Util.cprint("need command [init, sync, forall]")
+    sys.exit()
+
 subModule = sys.argv[1]
 if subModule == 'init':
     init.main()
